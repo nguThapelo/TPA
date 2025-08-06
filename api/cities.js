@@ -1,10 +1,10 @@
 const { get } = require('axios');
 const apiUrl = process.env.CITIES_API_URL;
 
-async function fetchWeatherData(cityQuery) {
+async function fetchCityData(cityQuery) {
     try {
         const response = await get(`${apiUrl}name=${encodeURIComponent(cityQuery)}`);
-        console.log("🚀 ~ fetchWeatherData ~ response:", response.data)
+        console.log("🚀 ~ fetchCityData ~ response:", response.data)
 
         return response.data;
     } catch (error) {
@@ -13,4 +13,4 @@ async function fetchWeatherData(cityQuery) {
     }
 }
 
-module.exports = { fetchWeatherData };
+module.exports = { fetchCityData };
