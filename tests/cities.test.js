@@ -13,9 +13,12 @@ test('Returns city suggestions matching input', () => {
 });
 
 // Test case to verify behavior when no city matches the input
-test('Returns empty array if no match', () => {
-  // Call getCitySuggestions with input string 'Xyz' that matches no city
-  const results = getCitySuggestions('Xyz');
+test('Returns empty array if no match', async () => {
+   // Call fetchCityData with input string 'Xyz' that matches no city
+  const results = await fetchCityData('Xyz');
+  
+  // Expect results to be an array
+  expect(Array.isArray(results)).toBe(true);
   
   // Expect the results array to be empty
   expect(results).toHaveLength(0);
