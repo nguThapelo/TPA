@@ -3,7 +3,7 @@ const apiUrl = process.env.CITIES_API_URL;
 
 async function fetchCityData(cityQuery) {
     try {
-        const response = await get(`${apiUrl}name=${encodeURIComponent(cityQuery)}`);
+        const response = await get(`${apiUrl}?name=${encodeURIComponent(cityQuery)}&limit=10`);
         console.log("🚀 ~ fetchCityData ~ response:", response.data)
 
         return response.data;
