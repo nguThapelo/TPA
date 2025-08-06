@@ -1,10 +1,14 @@
 language: node_js
 node_js:
-  - '16'             # Use the Node.js version your project runs on
+  - "20"   # specify Node.js 20
+
 cache:
   directories:
-    - node_modules   # Cache dependencies to speed up builds
+    - node_modules  # cache dependencies to speed up builds
+
 install:
-  - npm install      # Install dependencies
+  - npm install    # install dependencies
+
 script:
-  - npm test         # Run your tests (make sure your package.json has a test script for Jest)
+  - npm test       # run Jest tests (make sure your package.json has a test script for Jest)
+  - npm start  # start your application
