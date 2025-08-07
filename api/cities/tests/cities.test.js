@@ -1,8 +1,9 @@
 const axios = require('axios');
-const { getCities } = require('../api/cities');
+const { getCities } = require('../index');
 
 jest.mock('axios');
 const mockedAxios = axios;
+
 
 describe('getCities', () => {
   beforeEach(() => {
@@ -20,10 +21,10 @@ describe('getCities', () => {
             longitude: 18.4241,
             country: 'South Africa',
             admin1: 'Western Cape',
-            population: 433688,
-          },
-        ],
-      },
+            population: 433688
+          }
+        ]
+      }
     };
 
     mockedAxios.get.mockResolvedValue(mockResponse);
@@ -35,8 +36,8 @@ describe('getCities', () => {
       expect.objectContaining({
         timeout: 10000,
         headers: {
-          'User-Agent': 'Weather-App/1.0',
-        },
+          'User-Agent': 'Weather-App/1.0'
+        }
       })
     );
 
@@ -48,12 +49,18 @@ describe('getCities', () => {
       longitude: 18.4241,
       country: 'South Africa',
       admin1: 'Western Cape',
-      population: 433688,
+      population: 433688
     });
   });
 
   test('Returns empty array when no cities match', async () => {
-    mockedAxios.get.mockResolvedValue({ data: { results: [] } });
+    const mockResponse = {
+      data: {
+        results: []
+      }
+    };
+
+    mockedAxios.get.mockResolvedValue(mockResponse);
 
     const results = await getCities('Xyz');
 
@@ -62,7 +69,11 @@ describe('getCities', () => {
   });
 
   test('Returns empty array when API returns no results property', async () => {
-    mockedAxios.get.mockResolvedValue({ data: {} });
+    const mockResponse = {
+      data: {}
+    };
+
+    mockedAxios.get.mockResolvedValue(mockResponse);
 
     const results = await getCities('SomeCity');
 
@@ -85,9 +96,7 @@ describe('getCities', () => {
     mockError.code = 'ENOTFOUND';
     mockedAxios.get.mockRejectedValue(mockError);
 
-    await expect(getCities('Dubai')).rejects.toThrow(
-      'Network error: Unable to reach geocoding service'
-    );
+    await expect(getCities('Dubai')).rejects.toThrow('Network error: Unable to reach geocoding service');
   });
 
   test('Handles timeout errors gracefully', async () => {
@@ -95,26 +104,25 @@ describe('getCities', () => {
     mockError.code = 'ECONNABORTED';
     mockedAxios.get.mockRejectedValue(mockError);
 
-    await expect(getCities('Dubai')).rejects.toThrow(
-      'Request timeout: Geocoding service took too long to respond'
-    );
+    await expect(getCities('Dubai')).rejects.toThrow('Request timeout: Geocoding service took too long to respond');
   });
 
   test('Handles API errors with status codes', async () => {
     const mockError = new Error('API Error');
     mockError.response = {
       status: 500,
-      statusText: 'Internal Server Error',
+      statusText: 'Internal Server Error'
     };
     mockedAxios.get.mockRejectedValue(mockError);
 
-    await expect(getCities('Dubai')).rejects.toThrow(
-      'Geocoding API error: 500 - Internal Server Error'
-    );
+    await expect(getCities('Dubai')).rejects.toThrow('Geocoding API error: 500 - Internal Server Error');
   });
 
   test('Properly encodes city names with special characters', async () => {
-    const mockResponse = { data: { results: [] } };
+    const mockResponse = {
+      data: { results: [] }
+    };
+
     mockedAxios.get.mockResolvedValue(mockResponse);
 
     await getCities('São Paulo');

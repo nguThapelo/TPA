@@ -1,4 +1,4 @@
-const { rankActivities } = require('../general/rankActivities');
+const { rankActivities } = require('../index');
 
 describe('rankActivities', () => {
   test('Ranks skiing highest when temperature below 5 and snow weather code', () => {

@@ -1,6 +1,6 @@
-const { getCities } = require('../api/cities');
-const { getWeather } = require('../api/weather');
-const { rankActivities } = require('../general/rankActivities');
+const { getCities } = require('../api/cities/index');
+const { getWeather } = require('../api/weather/index');
+const rankActivities = require('../Activities/index').rankActivities;
 
 const resolvers = {
   Query: {

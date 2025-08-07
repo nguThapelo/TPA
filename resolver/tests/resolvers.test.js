@@ -1,11 +1,11 @@
-const resolvers = require('../resolver/resolvers');
-const apiCities = require('../api/cities');
-const apiWeather = require('../api/weather');
-const rankActivities = require('../general/rankActivities').rankActivities;
+const resolvers = require('../index');
+const apiCities = require('../../api/cities/index');
+const apiWeather = require('../../api/weather/index');
+const rankActivities = require('../../Activities/index').rankActivities;
 
-jest.mock('../api/cities');
-jest.mock('../api/weather');
-jest.mock('../general/rankActivities');
+jest.mock('../../api/cities/index');
+jest.mock('../../api/weather/index');
+jest.mock('../../Activities/index');
 
 describe('GraphQL Resolvers', () => {
   afterEach(() => {
