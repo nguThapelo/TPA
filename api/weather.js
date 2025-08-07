@@ -3,7 +3,7 @@ const { get } = require('axios');
 async function getWeather(latitude, longitude) {
   try {
     const response = await get(
-      `http://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
     );
 
     const { current_weather } = response.data || {};

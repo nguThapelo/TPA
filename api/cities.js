@@ -10,7 +10,7 @@ async function getCities(city) {
 
   try {
     const response = await axios.get(
-      `http://geocoding-api.open-meteo.com/v1/search?name=${encodedCity}&count=10&language=en&format=json`,
+      `https://geocoding-api.open-meteo.com/v1/search?name=${encodedCity}&count=10&language=en&format=json`,
       {
         timeout: 10000,
         headers: {
