@@ -1,20 +1,11 @@
 const axios = require('axios');
-const { fetchWeatherData } = require('../api/weather');
+const { getWeather } = require('../api/weather');
 
 jest.mock('axios');
 
-describe('fetchWeatherData', () => {
-  const apiUrlBackup = process.env.WEATHER_API_URL;
+describe('getWeather', () => {
   const latitude = 12.34;
   const longitude = 56.78;
-
-  beforeAll(() => {
-    process.env.WEATHER_API_URL = 'http://fakeapi.com/weather';
-  });
-
-  afterAll(() => {
-    process.env.WEATHER_API_URL = apiUrlBackup;
-  });
 
   test('Returns formatted weather data when API responds successfully', async () => {
     const mockResponse = {
@@ -29,10 +20,10 @@ describe('fetchWeatherData', () => {
 
     axios.get.mockResolvedValue(mockResponse);
 
-    const result = await fetchWeatherData(latitude, longitude);
+    const result = await getWeather(latitude, longitude);
 
     expect(axios.get).toHaveBeenCalledWith(
-      `${process.env.WEATHER_API_URL}?latitude=${latitude}&longitude=${longitude}&current_weather=true`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
     );
 
     expect(result).toEqual({
@@ -45,7 +36,7 @@ describe('fetchWeatherData', () => {
   test('Handles missing current_weather gracefully', async () => {
     axios.get.mockResolvedValue({ data: {} });
 
-    const result = await fetchWeatherData(latitude, longitude);
+    const result = await getWeather(latitude, longitude);
 
     expect(result).toEqual({
       temperature: 'cannot determine temperature',
@@ -58,6 +49,6 @@ describe('fetchWeatherData', () => {
     const mockError = new Error('Network error');
     axios.get.mockRejectedValue(mockError);
 
-    await expect(fetchWeatherData(latitude, longitude)).rejects.toThrow('Failed to fetch weather data for undefined');
+    await expect(getWeather(latitude, longitude)).rejects.toThrow('Failed to fetch weather data');
   });
 });

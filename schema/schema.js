@@ -1,38 +1,39 @@
 const { gql } = require('apollo-server');
 
-// Schema
 const typeDefs = gql`
+  """
+  This schema defines the types and queries for the weather application. 
+  It includes types for City, Weather, and Activity.
+  """
 
-# GraphQL schema definition
-  """This schema defines the types and queries for the weather application.
-  It includes types for City and Weather, and a query to fetch weather data based on city
-   name. then ranking the types of activities available"""
-  
   type City {
-    name: String!           
-    country: String!        
-    latitude: Float!       
-    longitude: Float!       
+    name: String!
+    country: String!
+    latitude: Float!
+    longitude: Float!
   }
 
-
-    type Weather {
+  type Weather {
     temperature: Float!
     weatherCode: Int!
     windSpeed: Float!
   }
-    type Activity {
-        activity: String!
-  score: Float!
-    }
+
+  type Activity {
+    activity: String!
+    score: Float!
+  }
 
   type Query {
-    fetchCityData(city: String!): City
+    # Returns a list of cities matching the input string
+    fetchCityData(city: String!): [City]
+
+    # Returns current weather for the specified city
     fetchWeatherData(city: String!): Weather
+
+    # Returns ranked activities based on weather for the specified city
     rankActivities(city: String!): [Activity]
   }
-  
-  
-  `;
+`;
 
 module.exports = typeDefs;
