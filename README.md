@@ -1,4 +1,4 @@
-Overview of My Travel Planner GraphQL API Architecture and Technical Choices
+# Overview of My Travel Planner GraphQL API Architecture and Technical Choices
 This project delivers a scalable and maintainable GraphQL API intended to help travelers plan their trips by providing accurate weather forecasts and activity recommendations tailored to the current weather conditions of a selected city.
 
 Architecture and Core Components
@@ -47,5 +47,4 @@ Implement automated builds, tests, and deployments to streamline development and
 Robust Validation and Monitoring:
 Improve API input validation layers and add logging/alerting to increase reliability and maintainability.
 
-# add travis markdown
 [![Build Status](https://app.travis-ci.com/nguThapelo/TPA.svg?token=u181h9zra4pJQPTUCHxw&branch=master)](https://app.travis-ci.com/nguThapelo/TPA)
