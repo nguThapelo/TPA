@@ -1,81 +1,127 @@
 const axios = require('axios');
-const { getWeather } = require('../api/weather');
+const { getCities } = require('../api/cities');
 
 jest.mock('axios');
 const mockedAxios = axios;
 
-describe('getWeather', () => {
-  const latitude = 12.34;
-  const longitude = 56.78;
-
+describe('getCities', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test('Returns formatted weather data when API responds successfully', async () => {
+  test('Returns city suggestions when API responds successfully', async () => {
     const mockResponse = {
       data: {
-        current_weather: {
-          temperature: 23,
-          windspeed: 10,
-          weathercode: 81,
-        }
-      }
+        results: [
+          {
+            id: 1,
+            name: 'Cape Town',
+            latitude: -33.9249,
+            longitude: 18.4241,
+            country: 'South Africa',
+            admin1: 'Western Cape',
+            population: 433688,
+          },
+        ],
+      },
     };
 
     mockedAxios.get.mockResolvedValue(mockResponse);
 
-    const result = await getWeather(latitude, longitude);
+    const results = await getCities('Cape');
 
     expect(mockedAxios.get).toHaveBeenCalledWith(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
+      'https://geocoding-api.open-meteo.com/v1/search?name=Cape&count=10&language=en&format=json',
+      expect.objectContaining({
+        timeout: 10000,
+        headers: {
+          'User-Agent': 'Weather-App/1.0',
+        },
+      })
     );
 
-    expect(result).toEqual({
-      temperature: 23,
-      windSpeed: 10,
-      weatherCode: 81
+    expect(results).toHaveLength(1);
+    expect(results[0]).toEqual({
+      id: 1,
+      name: 'Cape Town',
+      latitude: -33.9249,
+      longitude: 18.4241,
+      country: 'South Africa',
+      admin1: 'Western Cape',
+      population: 433688,
     });
   });
 
-  test('Handles missing current_weather gracefully', async () => {
+  test('Returns empty array when no cities match', async () => {
+    mockedAxios.get.mockResolvedValue({ data: { results: [] } });
+
+    const results = await getCities('Xyz');
+
+    expect(Array.isArray(results)).toBe(true);
+    expect(results).toHaveLength(0);
+  });
+
+  test('Returns empty array when API returns no results property', async () => {
     mockedAxios.get.mockResolvedValue({ data: {} });
 
-    const result = await getWeather(latitude, longitude);
+    const results = await getCities('SomeCity');
 
-    expect(result).toEqual({
-      temperature: null,
-      windSpeed: null,
-      weatherCode: null
-    });
+    expect(Array.isArray(results)).toBe(true);
+    expect(results).toHaveLength(0);
   });
 
-  test('Throws error when axios.get fails', async () => {
+  test('Throws error for empty city name', async () => {
+    await expect(getCities('')).rejects.toThrow('City name is required');
+    await expect(getCities('   ')).rejects.toThrow('City name is required');
+  });
+
+  test('Throws error for null or undefined city name', async () => {
+    await expect(getCities(null)).rejects.toThrow('City name is required');
+    await expect(getCities(undefined)).rejects.toThrow('City name is required');
+  });
+
+  test('Handles network errors gracefully', async () => {
     const mockError = new Error('Network error');
+    mockError.code = 'ENOTFOUND';
     mockedAxios.get.mockRejectedValue(mockError);
 
-    await expect(getWeather(latitude, longitude)).rejects.toThrow('Failed to fetch weather data');
+    await expect(getCities('Dubai')).rejects.toThrow(
+      'Network error: Unable to reach geocoding service'
+    );
   });
 
-  test('Handles API response with partial data', async () => {
-    const mockResponse = {
-      data: {
-        current_weather: {
-          temperature: 25,
-          // Missing windspeed and weathercode
-        }
-      }
-    };
+  test('Handles timeout errors gracefully', async () => {
+    const mockError = new Error('Timeout');
+    mockError.code = 'ECONNABORTED';
+    mockedAxios.get.mockRejectedValue(mockError);
 
+    await expect(getCities('Dubai')).rejects.toThrow(
+      'Request timeout: Geocoding service took too long to respond'
+    );
+  });
+
+  test('Handles API errors with status codes', async () => {
+    const mockError = new Error('API Error');
+    mockError.response = {
+      status: 500,
+      statusText: 'Internal Server Error',
+    };
+    mockedAxios.get.mockRejectedValue(mockError);
+
+    await expect(getCities('Dubai')).rejects.toThrow(
+      'Geocoding API error: 500 - Internal Server Error'
+    );
+  });
+
+  test('Properly encodes city names with special characters', async () => {
+    const mockResponse = { data: { results: [] } };
     mockedAxios.get.mockResolvedValue(mockResponse);
 
-    const result = await getWeather(latitude, longitude);
+    await getCities('São Paulo');
 
-    expect(result).toEqual({
-      temperature: 25,
-      windSpeed: null,
-      weatherCode: null
-    });
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      'https://geocoding-api.open-meteo.com/v1/search?name=S%C3%A3o%20Paulo&count=10&language=en&format=json',
+      expect.any(Object)
+    );
   });
 });
-

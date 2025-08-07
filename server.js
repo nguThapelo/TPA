@@ -1,19 +1,15 @@
-
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema/schema');
 const resolvers = require('./resolver/resolvers');
-// Function to start the Apollo Server
+
 async function startServer() {
-
-    // This function initializes the server 
-    const server = new ApolloServer({ typeDefs, resolvers });
-
-    // Start the server and listen on port 4000
-    server.listen({ port: 4000 }).then(({ url }) => {
-        // Log the URL where the server is running to the console
-        console.log(`🚀 Server ready at ${url}`);
-    });
+  const server = new ApolloServer({ typeDefs, resolvers });
+  try {
+    const { url } = await server.listen({ port: 4000 });
+    console.log(`🚀 Server ready at ${url}`);
+  } catch (error) {
+    console.error('Failed to start server:', error);
+  }
 }
 
-// Invoke the function to start the server
 startServer();
