@@ -12,7 +12,7 @@ const resolvers = {
         const cities = await getCities(city);
         return cities || [];
       } catch (error) {
-        console.error('Error fetching city data:', error.message);
+        console.log('Error fetching city data:', error.message);
         return [];
       }
     },
@@ -33,7 +33,7 @@ const resolvers = {
         const weather = await getWeather(matchedCity.latitude, matchedCity.longitude);
         return weather || {};
       } catch (error) {
-        console.error('Error fetching weather data:', error.message);
+        console.log('Error fetching weather data:', error.message);
         throw error;
       }
     },
@@ -55,7 +55,7 @@ const resolvers = {
         const activities = rankActivities(weather);
         return activities || [];
       } catch (error) {
-        console.error('Error ranking activities:', error.message);
+        console.log('Error ranking activities:', error.message);
         throw error;
       }
     }

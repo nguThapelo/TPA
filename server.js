@@ -8,7 +8,7 @@ async function startServer() {
     const { url } = await server.listen({ port: 4000 });
     console.log(`🚀 Server ready at ${url}`);
   } catch (error) {
-    console.error('Failed to start server:', error);
+    console.log('Failed to start server:', error);
   }
 }
 

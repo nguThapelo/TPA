@@ -15,7 +15,7 @@ async function getWeather(latitude, longitude) {
     };
   } catch (error) {
     // Log error details (optional)
-    console.error('Error fetching weather data:', error.message);
+    console.log('Error fetching weather data:', error.message);
     throw new Error('Failed to fetch weather data');
   }
 }
