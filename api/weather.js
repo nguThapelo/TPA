@@ -14,7 +14,7 @@ async function getWeather(latitude, longitude) {
       weatherCode: current_weather?.weathercode ?? null,
     };
   } catch (error) {
-    console.error(`Error fetching weather data:`, error);
+    console.log(`Error fetching weather data:`, error);
     throw new Error('Failed to fetch weather data');
   }
 }

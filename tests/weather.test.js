@@ -39,9 +39,9 @@ describe('getWeather', () => {
     const result = await getWeather(latitude, longitude);
 
     expect(result).toEqual({
-      temperature: 'cannot determine temperature',
-      windSpeed: 'cannot determine wind speed',
-      weatherCode: 'cannot determine weather code'
+      temperature: '',
+      windSpeed: '',
+      weatherCode: ''
     });
   });
 

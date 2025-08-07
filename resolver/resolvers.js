@@ -10,7 +10,7 @@ const resolvers = {
         const cities = await getCities(city);
         return cities || [];
       } catch (error) {
-        console.error('Error fetching city data:', error);
+        console.log('Error fetching city data:', error);
         return [];
       }
     },

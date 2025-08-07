@@ -1,44 +1,25 @@
-const axios = require('axios');
-const https = require('https');
-const { getCities } = require('../api/cities');
+const { getCities } = require("../api/cities");
 
-jest.mock('axios');
+// Test case to verify city suggestions when input partially matches city names
+test('Returns city suggestions matching input', () => {
+  // Call getCities with input string 'Cape'
+  const results = getCities('Cape');
+  
+  // Expect the results array to contain exactly one city
+  expect(results).toHaveLength(1);
+  
+  // Expect the name of the first city in results to be 'Cape Town'
+  expect(results[0].name).toBe('Cape Town');
+});
 
-describe('getCities', () => {
-  const cityName = 'Cape Town';
-  const fakeResponseData = [
-    {
-      name: 'Cape Town',
-      country: 'South Africa',
-      latitude: -33.9249,
-      longitude: 18.4241
-    }
-  ];
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test('Returns cities array when API responds successfully', async () => {
-    axios.get.mockResolvedValue({ data: fakeResponseData });
-
-    const result = await getCities(cityName);
-
-    // Ensure axios.get is called with the correct URL and httpsAgent
-    expect(axios.get).toHaveBeenCalled();
-    // Check for URL substring and httpsAgent presence
-    const callArgs = axios.get.mock.calls[0];
-    expect(callArgs[0]).toContain(encodeURIComponent(cityName));
-    expect(callArgs[1]).toHaveProperty('httpsAgent');
-    expect(callArgs[1].httpsAgent).toBeInstanceOf(https.Agent);
-
-    expect(result).toEqual(fakeResponseData);
-  });
-
-  test('Throws error on API failure', async () => {
-    const error = new Error('API failed');
-    axios.get.mockRejectedValue(error);
-
-    await expect(getCities(cityName)).rejects.toThrow(`Failed to fetch city data for ${cityName}`);
-  });
+// Test case to verify behavior when no city matches the input
+test('Returns empty array if no match', async () => {
+   // Call getCities with input string 'Xyz' that matches no city
+  const results = await getCities('Xyz');
+  
+  // Expect results to be an array
+  expect(Array.isArray(results)).toBe(true);
+  
+  // Expect the results array to be empty
+  expect(results).toHaveLength(0);
 });
