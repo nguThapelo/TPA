@@ -1,15 +1,12 @@
-const https = require('https');
 const { get } = require('axios');
 
 async function getCities(city) {
   console.log("🚀 ~ getCities ~ city:", city);
   try {
     // Create an https agent that disables SSL verification
-    const httpsAgent = new https.Agent({ rejectUnauthorized: false });
 
     const response = await get(
-      `https://api.api-ninjas.com/v1/city?name=${encodeURIComponent(city)}&limit=10`,
-      { httpsAgent }
+      `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&limit=10`
     );
 
     console.log("🚀 ~ getCities ~ response:", response.data);
