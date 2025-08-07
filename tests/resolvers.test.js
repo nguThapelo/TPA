@@ -1,4 +1,4 @@
-const { resolvers } = require('../resolver/resolvers');
+const resolvers = require('../resolver/resolvers');
 const apiCities = require('../api/cities');
 const apiWeather = require('../api/weather');
 const rankActivities = require('../general/rankActivities').rankActivities;
