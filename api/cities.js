@@ -20,15 +20,7 @@ async function getCities(city) {
     );
 
     // Also defensively check that results is an array
-    const results = Array.isArray(response.data?.results) ? response.data.results : [{
-      id: 12,
-      name: 'Cape Town',
-      latitude: -33.9249,
-      longitude: 18.4241,
-      country: 'South Africa',
-      admin1: 'Western Cape',
-      population:   433688,
-    }];
+    const results = Array.isArray(response.data?.results) ? response.data.results : [];
 
     return results.map(cityObj => ({
       id: cityObj.id,
