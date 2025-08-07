@@ -11,7 +11,7 @@ async function getCities(city) {
 
     console.log("🚀 ~ getCities ~ response:", response.data);
 
-    return response.data;
+    return response.data ?? [];
   } catch (error) {
     console.log(`Error fetching city data for ${city}:`, error.response ? error.response.data : error.message);
     throw new Error(`Failed to fetch city data for ${city}`);

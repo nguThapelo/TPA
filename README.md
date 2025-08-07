@@ -16,3 +16,6 @@ use axios for data fetching from api
 user apollo server
 use jest for unit test
 use 
+
+
+[![Build Status](https://app.travis-ci.com/nguThapelo/TPA.svg?token=u181h9zra4pJQPTUCHxw&branch=master)](https://app.travis-ci.com/nguThapelo/TPA)
