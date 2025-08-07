@@ -5,6 +5,10 @@ const { rankActivities } = require('../general/rankActivities');
 const resolvers = {
   Query: {
     fetchCityData: async (_, { city }) => {
+      console.log("🚀 ~ city:", city)
+      if (!city) {
+        console.log('No city provided');
+      }
       // Fetch city suggestions based on input string
       try {
         const cities = await getCities(city);
