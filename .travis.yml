@@ -11,5 +11,5 @@ install:
 
 script:
   - npm test       # run Jest tests (make sure your package.json has a test script for Jest)
-  - npm start  # start your application
+  #- npm start  # start your application
   ###########################
