@@ -31,7 +31,7 @@ describe('getCities', () => {
     const results = await getCities('Cape');
 
     expect(mockedAxios.get).toHaveBeenCalledWith(
-      'https://geocoding-api.open-meteo.com/v1/search?name=Cape&count=10&language=en&format=json',
+      'http://geocoding-api.open-meteo.com/v1/search?name=Cape&count=10&language=en&format=json',
       expect.objectContaining({
         timeout: 10000,
         headers: {
@@ -120,7 +120,7 @@ describe('getCities', () => {
     await getCities('São Paulo');
 
     expect(mockedAxios.get).toHaveBeenCalledWith(
-      'https://geocoding-api.open-meteo.com/v1/search?name=S%C3%A3o%20Paulo&count=10&language=en&format=json',
+      'http://geocoding-api.open-meteo.com/v1/search?name=S%C3%A3o%20Paulo&count=10&language=en&format=json',
       expect.any(Object)
     );
   });
