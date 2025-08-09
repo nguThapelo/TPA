@@ -10,8 +10,6 @@ Architecture and Core Components
 
 - Jest is used for unit testing the API logic and resolvers to ensure code quality.
 
-- Github is used for unit testing the API logic and resolvers to ensure code quality.
-
 Trade-Offs and Omissions
 - The project currently only implements the backend API and does not include a frontend interface.
 
